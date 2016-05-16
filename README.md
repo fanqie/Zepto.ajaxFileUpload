@@ -12,4 +12,4 @@ the settings is the parameters for upload, except for the default settings from 
 
 ## Explain
 
-A better way to use `XMLHttpRequest` to upload file or submit form use `Blob` or `FormData`: <https://github.com/acrazing/ajaxFileUpload>
+A blog about this in Chinese: <https://blog.acrazing.me/post/ajax-file-upload.html> (I'm so sorry)
