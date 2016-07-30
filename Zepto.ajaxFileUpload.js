@@ -22,11 +22,11 @@
                 enctype: 'multipart/form-data',
                 style: 'position: absolute; top: -9999px; left: -9999px'
             });
-        $.isArray(data) && data.forEach(function (value, name) {
+        $.isArray(data) && data.forEach(function (item) {
             $form.append($('<input>', {
                 type: 'hidden',
-                name: name,
-                value: value
+                name: item.name,
+                value: item.value
             }))
         });
         return $form.append($file.before($file.clone()).attr('id', fileId)).appendTo(document.body);
