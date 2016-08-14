@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<body>
+<form>
+<input id=file type=file name=file/>
+<input type=hidden name=payload value=token/>
+</form>
+<button type=button>Submit</button>
+</body>
+<script src=http://zeptojs.com/zepto.js></script>
+<script src=https://raw.githubusercontent.com/acrazing/Zepto.ajaxFileUpload/master/Zepto.ajaxFileUpload.js></script>
+<script>
+$('button').on('click', function() {
+  $.ajaxFileUpload({
+    fileElementId: 'file',
+    data: $('form').serializeArray(),
+  })
+})
+</script>
+</html>
