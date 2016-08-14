@@ -88,8 +88,8 @@
     
     $.fn.submitWithFile = function(settings) {
         $.ajaxFileUpload($.extend(settings, {
-            fileElement: settings.fileElement ? $(settings.fileElement) : (settings.fileElementId ? $('#' + settings.fileElementId) : this.find('input[type=file]')),
-            data: this.serializeArray(),
+            fileElement: this.find(settings.fileElement || 'input[type=file]'),
+            data: settings.data || this.serializeArray(),
         }))
     }
 })(Zepto);
