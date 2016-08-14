@@ -81,7 +81,9 @@
         }
         $form.attr({
             action: s.url,
-            target: frameId
+            target: frameId,
+            method: s.type || 'POST',
+            enctype: 'multipart/form-data',
         }).submit();
         $io.on('load', function() {uploadCallback()});
     };
