@@ -6,6 +6,7 @@ a file upload library for zepto
 
 - save [raw file](https://raw.githubusercontent.com/acrazing/Zepto.ajaxFileUpload/master/Zepto.ajaxFileUpload.js) to your website directory
 - add to your html
+
   ```html
   <script src="path/to/zepto.js"></script>
   <script src="path/to/Zepto.ajaxFileUpload.js"></script>
@@ -14,6 +15,7 @@ a file upload library for zepto
 ## Usage
 
 - static method
+
   ```js
   // static
   $.ajaxFileUpload({
@@ -25,6 +27,7 @@ a file upload library for zepto
   })
   ```
 - dynamic method
+
   ```js
   $('form').submitWithFile({
     url: '/upload', // required, the url key to handle upload action
