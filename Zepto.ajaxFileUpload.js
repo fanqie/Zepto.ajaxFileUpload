@@ -10,10 +10,10 @@
         }).appendTo(document.body)
     }
 
-    function createUploadForm(id, fileElementId, data) {
+    function createUploadForm(id, fileSelector, data) {
         id = 'jUploadFormId-' + id;
         var fileId = 'jUploadFile' + id,
-            $file = $(document.getElementById(fileElementId)),
+            $file = $(fileSelector),
             $form = $('<form>', {
                 action: '',
                 method: 'post',
@@ -29,7 +29,7 @@
                 value: item.value
             }))
         });
-        return $form.append($file.before($file.clone()).attr('id', fileId)).appendTo(document.body);
+        return $form.append($file.before($file.clone())).appendTo(document.body);
     }
 
     function uploadData(r, type) {
@@ -41,7 +41,8 @@
     $.ajaxFileUpload = function (s) {
         s = $.extend({}, $.ajaxSettings, s);
         var id = +new Date,
-            $form = createUploadForm(id, s.fileElementId, s.data),
+            d = $.Deferred(),
+            $form = createUploadForm(id, s.fileElement || ('#' + s.fileElementId), s.data),
             $io = createUploadIframe(id, s.secureuri),
             io = $io.get(0),
             frameId = 'jUploadFrame' + id,
@@ -58,7 +59,7 @@
             }
             if (xml || isTimeout) {
                 requestDone = true;
-                status = isTimeout ? 'error' : 'success';
+                status = isTimeout === true ? 'error' : 'success';
                 if (status === 'success') {
                     var data = uploadData(xml, s.dataType);
                     if (s.success)
@@ -82,6 +83,13 @@
             action: s.url,
             target: frameId
         }).submit();
-        $io.on('load', uploadCallback);
+        $io.on('load', function() {uploadCallback()});
+    };
+    
+    $.fn.submitWithFile = function(settings) {
+        $.ajaxFileUpload($.extend(settings, {
+            fileElement: settings.fileElement ? $(settings.fileElement) : (settings.fileElementId ? $('#' + settings.fileElementId) : this.find('input[type=file]')),
+            data: this.serializeArray(),
+        }))
     }
 })(Zepto);
