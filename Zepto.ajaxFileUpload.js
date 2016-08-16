@@ -50,6 +50,8 @@
             status,
             requestDone = false;
         var uploadCallback = function (isTimeout) {
+            if(requestDone) return;
+            requestDone = true;
             if (io.contentWindow) {
                 xml.responseText = io.contentWindow.document.body ? io.contentWindow.document.body.innerHTML : null;
                 xml.responseXML = io.contentWindow.document.XMLDocument ? io.contentWindow.document.XMLDocument : io.contentWindow.document;
@@ -57,28 +59,16 @@
                 xml.responseText = io.contentDocument.document.body ? io.contentDocument.document.body.innerHTML : null;
                 xml.responseXML = io.contentDocument.document.XMLDocument ? io.contentDocument.document.XMLDocument : io.contentDocument.document;
             }
-            if (xml || isTimeout) {
-                requestDone = true;
-                status = isTimeout === true ? 'error' : 'success';
-                if (status === 'success') {
-                    var data = uploadData(xml, s.dataType);
-                    if (s.success)
-                        s.success(data, status);
-                    if (s.complete)
-                        s.complete(xml, status);
-                    setTimeout(function () {
-                        $io.remove();
-                        $form.remove();
-                    }, 100);
-                    xml = null
-                }
-            }
-        };
-        if (s.timeout > 0) {
+            
+            status = isTimeout === true ? 'error' : 'success';
+            status === 'success' ? s.success && s.success(uploadData(xml, s.dataType)) : (s.error && s.error())
+            s.complete && s.complete(uploadData(xml, s.dataType))
             setTimeout(function () {
-                requestDone || uploadCallback(true);
-            }, s.timeout);
-        }
+                $io.remove();
+                $form.remove();
+            }, 100);
+        };
+        s.timeout > 0 && setTimeout(function () {uploadCallback(true);}, s.timeout);
         $form.attr({
             action: s.url,
             target: frameId,
